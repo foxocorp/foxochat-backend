@@ -19,10 +19,7 @@ import app.foxochat.model.Avatar;
 import app.foxochat.model.Channel;
 import app.foxochat.model.Message;
 import app.foxochat.model.User;
-import app.foxochat.service.MediaService;
-import app.foxochat.service.MemberService;
-import app.foxochat.service.MessageService;
-import app.foxochat.service.UserService;
+import app.foxochat.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -45,12 +42,15 @@ public class UserController {
 
     private final MediaService mediaService;
 
+    private final ContactService contactService;
+
     public UserController(UserService userService, MemberService memberService, MessageService messageService,
-                          MediaService mediaService) {
+                          MediaService mediaService, ContactService contactService) {
         this.userService = userService;
         this.memberService = memberService;
         this.messageService = messageService;
         this.mediaService = mediaService;
+        this.contactService = contactService;
     }
 
     @Operation(summary = "Get me")
@@ -68,8 +68,8 @@ public class UserController {
                 .collect(Collectors.toList());
 
         List<Long> contacts = null;
-        if (withContacts) contacts = user.getContacts().stream()
-                .map(userContact -> userContact.getContact().getId()).toList();
+        if (withContacts) contacts =
+                contactService.findAllByUserId(user.getId()).stream().map(userContact -> userContact.getContact().getId()).toList();
 
         return new UserDTO(user, channels, contacts, true, withChannels, withContacts, withAvatar, withBanner);
     }
