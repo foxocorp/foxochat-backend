@@ -59,7 +59,7 @@ public class ChannelDTO {
             this.memberCount = channel.getMembers().size();
             if (withOwner) this.owner = new MemberDTO(channel.getMembers().stream()
                     .filter(m -> m.hasPermission(MemberConstant.Permissions.OWNER))
-                    .findFirst().get(), false, false);
+                    .findFirst().get(), false, false, false);
         }
         if (lastMessage != null)
             this.lastMessage = new MessageDTO(lastMessage, false, false, true, false);

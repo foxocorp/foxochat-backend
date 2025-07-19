@@ -210,7 +210,7 @@ public class ChannelController {
         Member member = memberService.getByChannelIdAndUserId(channel.getId(), Long.parseLong(memberId)).get()
                 .orElseThrow(MemberNotFoundException::new);
 
-        return new MemberDTO(member, withChannel, withUser);
+        return new MemberDTO(member, withChannel, withUser, false);
     }
 
     @Operation(summary = "Get members")
@@ -219,10 +219,11 @@ public class ChannelController {
             @RequestAttribute(value = AttributeConstant.CHANNEL) Channel channel,
             @PathVariable long channelId,
             @RequestParam(defaultValue = "false") boolean withChannel,
+            @RequestParam(defaultValue = "false") boolean withOwner,
             @RequestParam(defaultValue = "false") boolean withUser
     ) {
         return memberService.getAllByChannelId(channel.getId()).stream()
-                .map(member -> new MemberDTO(member, withChannel, withUser))
+                .map(member -> new MemberDTO(member, withChannel, withUser, withOwner))
                 .toList();
     }
 
