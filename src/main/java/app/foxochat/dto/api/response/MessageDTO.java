@@ -28,10 +28,10 @@ public class MessageDTO {
 
     private long createdAt;
 
-    public MessageDTO(Message message, boolean withChannel, boolean withAuthor, boolean withAttachments) {
+    public MessageDTO(Message message, boolean withChannel, boolean withUser, boolean withAuthor, boolean withAttachments) {
         this.id = message.getId();
         this.content = message.getContent();
-        if (withAuthor) this.author = new MemberDTO(message.getAuthor(), false, false);
+        if (withAuthor) this.author = new MemberDTO(message.getAuthor(), false, withUser);
         if (withChannel) this.channel = new ChannelShortDTO(message.getChannel(), null, false, false, false);
         if (message.getAttachments() != null && withAttachments) this.attachments = message.getAttachments().stream()
                 .map(messageAttachment -> new AttachmentDTO(messageAttachment.getAttachment()))

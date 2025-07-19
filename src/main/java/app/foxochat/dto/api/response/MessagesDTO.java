@@ -16,7 +16,7 @@ public class MessagesDTO {
 
     public MessagesDTO(List<Message> messages) {
         for (Message message : messages) {
-            this.messages.add(new MessageDTO(message, true, false, false));
+            this.messages.add(new MessageDTO(message, true, false, false, false));
         }
     }
 }

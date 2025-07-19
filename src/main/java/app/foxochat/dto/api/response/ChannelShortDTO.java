@@ -49,7 +49,7 @@ public class ChannelShortDTO {
         this.flags = channel.getFlags();
         this.memberCount = channel.getMembers().size();
         if (lastMessage != null)
-            this.lastMessage = new MessageDTO(lastMessage, false, true, false);
+            this.lastMessage = new MessageDTO(lastMessage, false, false, true, false);
         if (withOwner) this.owner = new UserShortDTO(channel.getMembers().stream()
                 .filter(m -> m.hasPermission(MemberConstant.Permissions.OWNER))
                 .findFirst().get().getUser(), true, true);

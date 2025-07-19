@@ -235,7 +235,8 @@ public class ChannelController {
             @RequestParam(defaultValue = "25") int limit,
             @RequestParam(defaultValue = "false") boolean withChannel,
             @RequestParam(defaultValue = "false") boolean withAttachments,
-            @RequestParam(defaultValue = "false") boolean withAuthor
+            @RequestParam(defaultValue = "false") boolean withAuthor,
+            @RequestParam(defaultValue = "false") boolean withUser
     ) {
         if (before <= 0) {
             before = System.currentTimeMillis();
@@ -246,7 +247,7 @@ public class ChannelController {
         }
 
         return messageService.getAllByChannel(before, limit, channel).stream()
-                .map(message -> new MessageDTO(message, withChannel, withAuthor, withAttachments))
+                .map(message -> new MessageDTO(message, withChannel, withUser, withAuthor, withAttachments))
                 .collect(Collectors.toList());
     }
 
@@ -258,9 +259,12 @@ public class ChannelController {
             @PathVariable long messageId,
             @RequestParam(defaultValue = "false") boolean withChannel,
             @RequestParam(defaultValue = "false") boolean withAttachments,
-            @RequestParam(defaultValue = "false") boolean withAuthor
+            @RequestParam(defaultValue = "false") boolean withAuthor,
+            @RequestParam(defaultValue = "false") boolean withUser
     ) throws MessageNotFoundException {
-        return new MessageDTO(messageService.getByIdAndChannel(messageId, channel), withChannel, withAuthor, withAttachments);
+        return new MessageDTO(messageService.getByIdAndChannel(messageId, channel), withChannel,
+                withUser,
+                withAuthor, withAttachments);
     }
 
     @Operation(summary = "Create message")

@@ -62,7 +62,7 @@ public class ChannelDTO {
                     .findFirst().get(), false, false);
         }
         if (lastMessage != null)
-            this.lastMessage = new MessageDTO(lastMessage, false, true, false);
+            this.lastMessage = new MessageDTO(lastMessage, false, false, true, false);
         this.createdAt = channel.getCreatedAt();
     }
 }
