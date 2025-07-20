@@ -209,7 +209,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         List<Long> recipients = memberService.getChannelsByUserId(user.getId()).stream()
-                .flatMap(channel -> channel.getMembers().stream())
+                .flatMap(channel -> memberService.getAllByChannelId(channel.getId()).stream())
                 .map(Member::getId)
                 .distinct()
                 .collect(Collectors.toList());
