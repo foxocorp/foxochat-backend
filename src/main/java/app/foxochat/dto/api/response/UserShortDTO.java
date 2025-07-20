@@ -24,6 +24,8 @@ public class UserShortDTO {
 
     private long statusUpdatedAt;
 
+    private long createdAt;
+
     @SuppressWarnings("unused")
     public UserShortDTO() {
     }
@@ -40,5 +42,6 @@ public class UserShortDTO {
         this.username = user.getUsername();
         this.status = user.getStatus();
         this.statusUpdatedAt = user.getStatusUpdatedAt();
+        this.createdAt = user.getCreatedAt();
     }
 }
