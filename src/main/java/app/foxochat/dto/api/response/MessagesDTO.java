@@ -14,9 +14,10 @@ public class MessagesDTO {
 
     private List<MessageDTO> messages;
 
-    public MessagesDTO(List<Message> messages) {
+    public MessagesDTO(List<Message> messages, boolean withChannel, boolean withAuthor,
+                       boolean withAttachments) {
         for (Message message : messages) {
-            this.messages.add(new MessageDTO(message, true, false, false, false));
+            this.messages.add(new MessageDTO(message, withChannel, withAuthor, withAttachments));
         }
     }
 }
