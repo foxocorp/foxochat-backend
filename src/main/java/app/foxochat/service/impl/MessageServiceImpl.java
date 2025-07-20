@@ -96,7 +96,7 @@ public class MessageServiceImpl implements MessageService {
 
         gatewayService.sendToSpecificSessions(getRecipients(channel),
                 GatewayConstant.Opcode.DISPATCH.ordinal(),
-                new MessageDTO(message, true, true, true, true),
+                new MessageDTO(message, true, true, true),
                 GatewayConstant.Event.MESSAGE_CREATE.getValue());
         log.debug("Message {} to channel {} created successfully", message.getId(), channel.getId());
     }
@@ -153,7 +153,7 @@ public class MessageServiceImpl implements MessageService {
 
         gatewayService.sendToSpecificSessions(getRecipients(channel),
                 GatewayConstant.Opcode.DISPATCH.ordinal(),
-                new MessageDTO(message, true, false, true, true),
+                new MessageDTO(message, true, true, true),
                 GatewayConstant.Event.MESSAGE_UPDATE.getValue());
         log.debug("Message {} in channel {} edited successfully", id, channel.getId());
 
