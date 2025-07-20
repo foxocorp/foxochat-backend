@@ -2,9 +2,9 @@ package app.foxochat.dto.api.response;
 
 import app.foxochat.constant.ChannelConstant;
 import app.foxochat.constant.MemberConstant;
-import app.foxochat.exception.member.MemberNotFoundException;
 import app.foxochat.model.Avatar;
 import app.foxochat.model.Channel;
+import app.foxochat.model.Member;
 import app.foxochat.model.Message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,14 +34,15 @@ public class ChannelDTO {
 
     private MemberDTO owner;
 
+    private Long ownerId;
+
     private long createdAt;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private MessageDTO lastMessage;
 
     public ChannelDTO(Channel channel, Message lastMessage, String displayName, String username, Avatar avatar,
-                      boolean withAvatar, boolean withBanner, boolean withOwner)
-            throws MemberNotFoundException {
+                      boolean withAvatar, boolean withBanner, boolean withOwner) {
         this.id = channel.getId();
         if (channel.getType() == ChannelConstant.Type.DM.getType()) {
             this.displayName = displayName;
@@ -56,13 +57,15 @@ public class ChannelDTO {
         this.type = channel.getType();
         this.flags = channel.getFlags();
         if (channel.getMembers() != null && channel.getType() != ChannelConstant.Type.DM.getType()) {
-            this.memberCount = channel.getMembers().size();
-            if (withOwner) this.owner = new MemberDTO(channel.getMembers().stream()
+            Member ownerMember = channel.getMembers().stream()
                     .filter(m -> m.hasPermission(MemberConstant.Permissions.OWNER))
-                    .findFirst().get(), false, false, false);
+                    .findFirst().get();
+            this.memberCount = channel.getMembers().size();
+            if (withOwner) this.owner = new MemberDTO(ownerMember, false, false, false);
+            this.ownerId = ownerMember.getId();
         }
         if (lastMessage != null)
-            this.lastMessage = new MessageDTO(lastMessage, false, false, true, false);
+            this.lastMessage = new MessageDTO(lastMessage, false, true, false);
         this.createdAt = channel.getCreatedAt();
     }
 }

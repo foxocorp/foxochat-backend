@@ -2,6 +2,7 @@ package app.foxochat.dto.api.response;
 
 import app.foxochat.constant.MemberConstant;
 import app.foxochat.model.Channel;
+import app.foxochat.model.Member;
 import app.foxochat.model.Message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +24,9 @@ public class ChannelShortDTO {
 
     private AvatarDTO banner;
 
-    private UserShortDTO owner;
+    private MemberDTO owner;
+
+    private Long ownerId;
 
     private int memberCount;
 
@@ -49,9 +52,12 @@ public class ChannelShortDTO {
         this.flags = channel.getFlags();
         this.memberCount = channel.getMembers().size();
         if (lastMessage != null)
-            this.lastMessage = new MessageDTO(lastMessage, false, false, true, false);
-        if (withOwner) this.owner = new UserShortDTO(channel.getMembers().stream()
+            this.lastMessage = new MessageDTO(lastMessage, false, true, false);
+        Member ownerMember = channel.getMembers().stream()
                 .filter(m -> m.hasPermission(MemberConstant.Permissions.OWNER))
-                .findFirst().get().getUser(), true, true);
+                .findFirst().get();
+        this.memberCount = channel.getMembers().size();
+        if (withOwner) this.owner = new MemberDTO(ownerMember, false, false, false);
+        this.ownerId = ownerMember.getId();
     }
 }
