@@ -129,10 +129,9 @@ public class MediaServiceImpl implements MediaService {
                     throw new UploadFailedException();
                 }
 
-                if (user != null && media.getUser().getId() != user.getId()) throw new MediaNotFoundException();
+                if (user != null && media.getUser() != null && media.getUser().getId() != user.getId()) throw new MediaNotFoundException();
 
-
-                if (user == null) throw new UploadFailedException();
+                if (user == null || media.getUser() == null) throw new UploadFailedException();
 
                 MediaUploadDTO urlDTO = new MediaUploadDTO(dto.getUrl(), media.getId());
 
